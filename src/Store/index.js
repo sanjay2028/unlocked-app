@@ -1,11 +1,11 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import jobList from './reducers/joblist';
-import jobForm from './reducers/jobform';
-import file from './reducers/file';
+import registerReducer from './reducers/register';
+import authReducer from './reducers/authReducer';
 import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
-    jobList,jobForm,file
+    register : registerReducer,
+    auth : authReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
