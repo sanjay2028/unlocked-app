@@ -1,19 +1,26 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Route, Redirect } from 'react-router-dom'
+import {connect} from 'react-redux';
 
-const AuthRoute = ({ component: Component, ...rest }) => {
-  return (
-    <Route
-      {...rest}
-      render={props =>
-        localStorage.getItem('auth_token') ? (
-          <Redirect to={`/user/dashboard`} />		  
-        ) : (
-          <Component {...props} />
-        )
-      }
-    />
-  )
+class AuthRoute extends Component{ 
+  render(){
+    let { component: Component, currentUser,...rest } = this.props;
+    return (
+      <Route
+        {...rest}
+        render={props =>
+          currentUser.id ? (
+            <Redirect to={`/user/dashboard`} />		  
+          ) : (
+            <Component {...props} />
+          )
+        }
+      />
+    )
+  }
 }
+const mapStateToProps = ({auth}) =>({
+  currentUser: auth.currentUser
+})
 
-export default AuthRoute
+export default connect(mapStateToProps, null)(AuthRoute);

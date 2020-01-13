@@ -2,7 +2,7 @@ import {
         REGISTRATION_PROCESS_STARTED,REGISTRATION_VALIDATION_FAILED, REGISTRATION_PROCESS_ENDED, 
         REGISTRATION_TYPE, REGISTRATION_SUCCESS, REGISTRATION_FAILED, USER_LOGIN_PROCESS_STARTED,
         USER_LOGIN_PROCESS_ENDED, USER_LOGIN_SUCCESS, USER_LOGIN_FAILED, CLEAR_REGISTRATON_ALERTS,
-        CLEAR_LOGIN_WARNING, CLEAR_LOGIN_NOTIFICATION
+        CLEAR_LOGIN_WARNING, CLEAR_LOGIN_NOTIFICATION,USER_LOGOUT, UPDATE_AUTH
     } from './constants';
 
 import auth from '../services/authService';
@@ -70,6 +70,23 @@ const clearWarning = ({
     type : CLEAR_LOGIN_WARNING
 })
 
+//Get User
+const getCurrentUser = (dispatch, payload) => {
+    auth.me().then(payload => {
+        if(payload !== undefined){
+            dispatch({type : UPDATE_AUTH, payload})    
+        } else {
+            localStorage.removeItem('auth_token');
+            dispatch({type : USER_LOGOUT})    
+        }
+    }        
+    ).catch(e => {        
+        dispatch({type : USER_LOGOUT})
+    });
+}
+
+//Login User
+
 const loginUser = (dispatch, payload) => {
     dispatch(authenticationStarted);
     auth.login(payload).then((data) => {        
@@ -92,5 +109,9 @@ const loginUser = (dispatch, payload) => {
     });
 }
 
+//Logout
+const logoutUser = {
+    type : USER_LOGOUT
+}
 
-export { registerUser, registerFor, loginUser, clearRegistrationAlerts,clearNotification,clearWarning} 
+export { registerUser, registerFor, loginUser, clearRegistrationAlerts,clearNotification,clearWarning, logoutUser, getCurrentUser} 

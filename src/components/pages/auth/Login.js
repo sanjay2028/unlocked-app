@@ -7,7 +7,7 @@ import LoginForm from '../../forms/LoginForm';
 import { Form } from 'react-final-form';
 
 class Login extends Component{
-
+    
     clearNotification = () => {
         this.props.clearNotification()
     }
@@ -16,9 +16,8 @@ class Login extends Component{
         this.props.loginUser(values);
     }   
 
-    render(){
-        const {notification, id, authorized, loginError} = this.props.auth;
-        if(authorized) return <Redirect to='/user/dashboard' />
+    render(){        
+        const {notification, currentUser, loginError} = this.props.auth;        
         return (
             <div className="page-login page-signup">            
                 <div className="form-normal form-login">
@@ -53,8 +52,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    clearNotification : dispatch(clearNotification),
-    clearWarning : dispatch(clearWarning),
+    clearNotification : () => dispatch(clearNotification),
+    clearWarning : () => dispatch(clearWarning),
     loginUser : (payload) => loginUser(dispatch, payload)
 })
 

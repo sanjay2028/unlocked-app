@@ -1,43 +1,39 @@
 import { 
         USER_LOGOUT,USER_LOGIN_SUCCESS, USER_LOGIN_FAILED,USER_LOGIN_NOTIFICATION,
-        CLEAR_LOGIN_WARNING,CLEAR_LOGIN_NOTIFICATION, USER_LOGIN_PROCESS_STARTED 
+        CLEAR_LOGIN_WARNING,CLEAR_LOGIN_NOTIFICATION, USER_LOGIN_PROCESS_STARTED, UPDATE_AUTH 
 } from '../../actions/constants';
 
 const initialState = {
-    id: '',
-    first_name: 'safe',
-    last_name: '',
-    role: '',
-    email: '',
-    authorized: false,
+    currentUser: {},    
     loading: false,
-    notification : "Hello World Here",
+    notification : "",
     loginError : null    
 }
 
 
 
-const authReducer = (state = initialState, {type, payload=null}) => {
+const authReducer = (state = initialState, {type, payload=null}) => {    
     switch(type){
-
         case USER_LOGIN_PROCESS_STARTED:
             return {
-                ...state, authorized : false, notification : null, warning: null, loginError: null
+                ...state, notification : null, warning: null, loginError: null
             }; 
 
-        case USER_LOGOUT:       
-            localStorage.clear();
+        case UPDATE_AUTH:
+            return {
+                ...state, ...payload
+            }
+
+        case USER_LOGOUT:               
             return initialState;
         
-        case USER_LOGIN_SUCCESS:
-            console.log("Success", payload);
+        case USER_LOGIN_SUCCESS:            
             return {
-                ...state, ...payload, authorized : true
+                ...state, ...payload
             };                    
-        case USER_LOGIN_FAILED:
-            console.log("Faile called");
+        case USER_LOGIN_FAILED:            
             return {
-                ...state, authorized : false, loginError : payload
+                ...state, currentUser : {}, loginError : payload
             }
 
         case USER_LOGIN_NOTIFICATION:            
@@ -52,7 +48,7 @@ const authReducer = (state = initialState, {type, payload=null}) => {
 
         case CLEAR_LOGIN_WARNING:            
             return {
-                ...state, warning : null
+                ...state, currentUser : {}, warning : null
             };        
         default:
             return state;

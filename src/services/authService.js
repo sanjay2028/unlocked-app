@@ -2,6 +2,23 @@ import axios from 'axios';
 import { BaseUrl } from './settings';
 
 const auth = {
+    me: () => {
+        return  axios
+        .get(`${BaseUrl}frontend/v1/user`,{
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem('auth_token')
+            }
+        })
+        .then(({data, status}) => {
+            if(status == 200){
+                return {currentUser : data}
+            }
+            return new Promise.reject("Unauthorized");
+        })        
+        .catch(error => {
+            console.log("HEreare", error);
+        });
+    },
     register : (params) => {        
         return axios        
                 .post(`${BaseUrl}frontend/v1/register`,params)
@@ -17,10 +34,10 @@ const auth = {
                 .then(({data}) => {                    
                     if(data.token){            
                         let {token} = data;
-                        let {id, first_name, last_name, role, email} = data.user;                                                
+                        let { user } = data;                                                
                         return {
                                 token, 
-                                payload : {id, first_name, last_name, role, email} ,
+                                payload : { currentUser : user } ,
                                 success : true, message: 'Login successfull!'
                             }
                     } else {                        

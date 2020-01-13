@@ -1,7 +1,7 @@
 @import '~bootstrap/scss/bootstrap.scss';
+@import url('~semantic-ui-css/semantic.min.css');
 @import './css/style.scss';
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap');
-
 @import 'form';
 
 .container {
@@ -11,3 +11,11 @@
 .page-choose-account .main-content .col-md-4 .ctn-inner .button-group button{
     width:100%;
 }
+
+.page-create-account{
+    &.investor-account{
+        &.investor-account-01{
+            padding-top:0 !important;
+        }
+    }
+} 
