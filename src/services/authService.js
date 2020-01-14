@@ -1,13 +1,14 @@
 import axios from 'axios';
 import { BaseUrl } from './settings';
+const headers = {
+    Authorization: "Bearer " + localStorage.getItem('auth_token')
+};
 
 const auth = {
     me: () => {
         return  axios
         .get(`${BaseUrl}frontend/v1/user`,{
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem('auth_token')
-            }
+            headers
         })
         .then(({data, status}) => {
             if(status == 200){
@@ -15,9 +16,40 @@ const auth = {
             }
             return new Promise.reject("Unauthorized");
         })        
-        .catch(error => {
-            console.log("HEreare", error);
-        });
+        .catch(error => error);
+    },profile: {
+                investor : (payload) => {
+                    return  axios
+                    .get(`${BaseUrl}frontend/v1/investors/profile`,{
+                        headers, payload 
+                    })
+                    .then(({data, status}) => {
+                        if(status == 200){
+                            return {currentUser : data}
+                        }
+                        return new Promise.reject("Unauthorized");
+                    })        
+                    .catch(error => error);
+                }
+    },settings : {
+            investor : (payload) => {
+                return  axios
+                .post(`${BaseUrl}frontend/v1/investors/profile-settings`,
+                    payload, {
+                        headers : {
+                            Authorization: "Bearer " + localStorage.getItem('auth_token'),
+                            Accept : "application/json"
+                        }
+                    }
+                )
+                .then((response) => {                    
+                    let {data, status} = response;
+                    if(status == 200){
+                        return {currentUser : data}
+                    }                     
+                })        
+                .catch(error => ({currentUser : null, error}));
+            }
     },
     register : (params) => {        
         return axios        

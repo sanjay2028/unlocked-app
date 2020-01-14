@@ -20,6 +20,7 @@ const authReducer = (state = initialState, {type, payload=null}) => {
             }; 
 
         case UPDATE_AUTH:
+            console.log("Updating auth");
             return {
                 ...state, ...payload
             }
