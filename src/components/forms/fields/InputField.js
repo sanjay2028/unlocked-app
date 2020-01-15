@@ -1,7 +1,8 @@
 import React from 'react';
 import { Field } from 'react-final-form';
 
-const InputField = ({label=undefined, type, name, validate}) =>  {    
+const InputField = ({label=undefined, placeholder="", type, name, validate, ...rest}) =>  {    
+    
     return(
         <div className="field">
             {label && <label className="title">{label}</label>}
@@ -15,7 +16,10 @@ const InputField = ({label=undefined, type, name, validate}) =>  {
                             const errorMessage = (meta.error && meta.touched)? meta.error : false;                                                        
                            return(
                             <div className="input-group">                                
-                                <input {...input} type={type} placeholder={label} className={`form-control ${hasError}`} />                                
+                                {   (type=='textarea')?
+                                    <textarea {...input} {...rest} placeholder={placeholder} className={`form-control form-control-textarea ${hasError}`}></textarea> :
+                                    <input {...input} {...rest} type={type}  className={`form-control ${hasError}`} />
+                                }
                                 { errorMessage && <div className="invalid-feedback invalid-entry">{errorMessage}</div>}
                             </div>    
                            );                  

@@ -10,7 +10,7 @@ class ProtectedRoutes extends Component{
       <Route
         {...rest}
         render={props =>
-          currentUser.id ? (
+          localStorage.getItem('auth_token') ? (
             <Component {...props} />
           ) : (
             <Redirect to={`/auth/login?redirect=${props.location.pathname}`} />

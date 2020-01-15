@@ -1,8 +1,10 @@
 import {
+        APP_LOADING_STARTS, APP_LOADING_ENDS,
         REGISTRATION_PROCESS_STARTED,REGISTRATION_VALIDATION_FAILED, REGISTRATION_PROCESS_ENDED, 
         REGISTRATION_TYPE, REGISTRATION_SUCCESS, REGISTRATION_FAILED, USER_LOGIN_PROCESS_STARTED,
         USER_LOGIN_PROCESS_ENDED, USER_LOGIN_SUCCESS, USER_LOGIN_FAILED, CLEAR_REGISTRATON_ALERTS,
-        CLEAR_LOGIN_WARNING, CLEAR_LOGIN_NOTIFICATION,USER_LOGOUT, UPDATE_AUTH
+        CLEAR_LOGIN_WARNING, CLEAR_LOGIN_NOTIFICATION,USER_LOGOUT, UPDATE_AUTH, 
+        START_PREFERENCE_UPDATE, END_PREFERENCE_UPDATE, PREFERENCE_UPDATE_SUCCESS, PREFERENCE_UPDATE_FAILED
     } from './constants';
 
 import auth from '../services/authService';
@@ -36,18 +38,26 @@ const registerFor = (dispatch, payload) => {
 
 const registerUser = (dispatch, payload) => {
     dispatch(registrationStarted);
-    auth.register(payload).then(data => {                
-        dispatch(registrationSuccess);
-        dispatch({
-            type : 'USER_LOGIN_NOTIFICATION',
-            payload: "Registration Successfull! Please login"
-        })
+    auth.register(payload).then(data => {         
+        let {token, currentUser, message=""} = data;
+        if(token){                        
+            localStorage.setItem('auth_token',token);            
+            localStorage.setItem('redirect',true);            
+            dispatch({type : UPDATE_AUTH, payload: currentUser});
+            dispatch({
+                type : REGISTRATION_SUCCESS                
+            });     
+        } else {
+            dispatch(registrationValidationFailed, {
+                type: 'error',
+                message : message
+            })    
+        }      
+        
         dispatch(registrationEnded);        
-    }).catch(error => {
+    }).catch(error => {        
         
-        console.log(error);
-        
-        dispatch(registrationEnded);
+        dispatch(registrationEnded);        
     })
 }
 
@@ -72,6 +82,7 @@ const clearWarning = ({
 
 //Get User
 const getCurrentUser = (dispatch, payload) => {
+    dispatch({type : APP_LOADING_STARTS})
     auth.me().then(payload => {
         if(payload !== undefined){
             dispatch({type : UPDATE_AUTH, payload})    
@@ -79,9 +90,11 @@ const getCurrentUser = (dispatch, payload) => {
             localStorage.removeItem('auth_token');
             dispatch({type : USER_LOGOUT})    
         }
+        dispatch({type : APP_LOADING_ENDS})
     }        
     ).catch(e => {        
         dispatch({type : USER_LOGOUT})
+        dispatch({type : APP_LOADING_ENDS})
     });
 }
 
@@ -102,8 +115,7 @@ const loginUser = (dispatch, payload) => {
                 type : USER_LOGIN_FAILED,
                 payload : error
             })
-        }
-        
+        }        
     }).catch(error => {
         console.log(error)
     });
@@ -114,4 +126,7 @@ const logoutUser = {
     type : USER_LOGOUT
 }
 
-export { registerUser, registerFor, loginUser, clearRegistrationAlerts,clearNotification,clearWarning, logoutUser, getCurrentUser} 
+export { 
+    registerUser, registerFor, loginUser, clearRegistrationAlerts,
+    clearNotification,clearWarning, logoutUser, getCurrentUser
+} 

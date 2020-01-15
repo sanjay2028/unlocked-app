@@ -1,8 +1,9 @@
 import React from 'react';
 import Logo from "../../assets/images/logo.png";
+import {LogoUnlocked, DefaultAvator} from '../common/Graphics';
 import { Link } from 'react-router-dom';
 
-const BrandLogo =  () => <div className="logo"><Link to="/"><img src={Logo} alt="Home" /></Link></div>
+const BrandLogo =  ({auth=true}) => <div className="logo"><Link to={auth? '/user/dashboard' : '/'}><img src={auth? LogoUnlocked : Logo} alt="Home" /></Link></div>
 
 const Search  = () => {
     return (
@@ -14,6 +15,13 @@ const Search  = () => {
         </form>
     );
 }
+
+const UserNotification = () => 
+                <div className="notification">
+					<div className="toggle-notification">
+						<span></span>
+					</div>
+				</div>
 
 const LoginButton = () => {
     return (<Link to="/auth/login" className="btn btn-outline-primary">Login</Link>);
@@ -27,5 +35,13 @@ const MenuToggle = () => {
     );
 }
 
-export { BrandLogo, Search, LoginButton, MenuToggle }
 
+
+const Avator = ({avatorUrl=DefaultAvator}) => 
+    <div className="avatar">
+        <Link to="/user/dashboard">
+            <img src={avatorUrl} alt="" />
+        </Link>
+    </div>
+
+export { BrandLogo, Search, LoginButton, MenuToggle, UserNotification, Avator }

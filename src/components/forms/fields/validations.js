@@ -11,6 +11,17 @@ const requiredName = value => {
     return "Required";            
 }
 
+const requiredCompany = value => {    
+    if(value){
+        let entry = value.trim();
+        if(entry){
+            let pattern = /^[a-zA-Z\s\d\.]{3,200}$/;
+            return pattern.test(entry)? undefined : "Invalid company name";
+        } 
+    }    
+    return "Company name is required";            
+}
+
 const requiredEmail = value => {    
     if(value){
         let entry = value.trim();
@@ -67,4 +78,4 @@ const validateForm = values => {
   }
 
 
-  export {required, requiredName, requiredEmail, requiredPhone, requiredPassword, validateForm}
+  export {required, requiredCompany, requiredName, requiredEmail, requiredPhone, requiredPassword, validateForm}

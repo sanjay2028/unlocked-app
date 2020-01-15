@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-const Dashboard = () => {
-    return <div>Dashboard Page</div>
-}
+class Dashboard extends Component{
 
-export default Dashboard;
+    componentDidMount(){        
+       
+    }
+
+    render(){
+        return <div>Dashboard Page</div>
+    }
+} 
+
+const mapStateToProps = ({auth})=> ({
+    auth
+});
+
+export default connect(mapStateToProps, null)(Dashboard);

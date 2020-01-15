@@ -26,6 +26,7 @@ const registerReducer = (state = initialState, {type, payload=null}) => {
                 ...state, isProcessing: false
             };            
         case REGISTRATION_SUCCESS:            
+            console.log("REGISTRATION_SUCCESS");
             return {
                 ...state, alert: {
                     type : 'success',
@@ -43,15 +44,14 @@ const registerReducer = (state = initialState, {type, payload=null}) => {
             return {
                 ...state, alert: {
                     type : 'error',
-                    message : "Show failed message here"
+                    message : payload
                 }
             };
         case REGISTRATION_TYPE:
             return {
                 ...state, optedType : payload
             }
-        case REGISTRATION_VALIDATION_FAILED:
-            console.log('REGISTRATION_VALIDATION_FAILED');
+        case REGISTRATION_VALIDATION_FAILED:            
             return {
                 ...state, alert: payload
             };

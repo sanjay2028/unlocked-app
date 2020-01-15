@@ -1,63 +1,73 @@
 import axios from 'axios';
 import { BaseUrl } from './settings';
-const headers = {
-    Authorization: "Bearer " + localStorage.getItem('auth_token')
+const config = {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem('auth_token')
+    }
 };
 
 const auth = {
     me: () => {
         return  axios
-        .get(`${BaseUrl}frontend/v1/user`,{
-            headers
-        })
+        .get(`${BaseUrl}frontend/v1/user`,config)
         .then(({data, status}) => {
             if(status == 200){
                 return {currentUser : data}
             }
             return new Promise.reject("Unauthorized");
         })        
-        .catch(error => error);
+        .catch(error => error)
+
     },profile: {
-                investor : (payload) => {
-                    return  axios
-                    .get(`${BaseUrl}frontend/v1/investors/profile`,{
-                        headers, payload 
-                    })
-                    .then(({data, status}) => {
-                        if(status == 200){
-                            return {currentUser : data}
-                        }
-                        return new Promise.reject("Unauthorized");
-                    })        
-                    .catch(error => error);
-                }
-    },settings : {
-            investor : (payload) => {
-                return  axios
-                .post(`${BaseUrl}frontend/v1/investors/profile-settings`,
-                    payload, {
-                        headers : {
-                            Authorization: "Bearer " + localStorage.getItem('auth_token'),
-                            Accept : "application/json"
-                        }
-                    }
-                )
-                .then((response) => {                    
-                    let {data, status} = response;
-                    if(status == 200){
-                        return {currentUser : data}
-                    }                     
-                })        
-                .catch(error => ({currentUser : null, error}));
-            }
+
+        broker :    (payload)=>
+                        axios
+                        .post(`${BaseUrl}frontend/v1/brokers/profile`,payload, config)
+                        .then(({data, status}) => {
+                            if(status == 200){
+                                return {currentUser : data}
+                            }       
+                            return new Promise.reject("Unauthorized");
+                        })        
+                        .catch(error => error),
+
+        investor :  (payload) =>
+                        axios
+                        .post(`${BaseUrl}frontend/v1/investors/profile`, payload, config)
+                        .then(({data, status}) => {
+                            if(status == 200){
+                                return {currentUser : data}
+                            }       
+                            return new Promise.reject("Unauthorized");
+                        })        
+                        .catch(error => error)        
+                     
+    },preferences: {
+
+        investor :  (payload) => 
+                        axios
+                        .post(`${BaseUrl}frontend/v1/investors/profile-settings`,payload, config)
+                        .then((response) => {                    
+                            let {data, status} = response;
+                            if(status == 200){
+                                return {currentUser : data}
+                            }                     
+                        })        
+                        .catch(error => ({currentUser : null, error}))
+            
     },
     register : (params) => {        
         return axios        
                 .post(`${BaseUrl}frontend/v1/register`,params)
-                .then(({data}) => {                    
-                    console.log(data);
-            }).catch(error => {
-                console.log(error);
+                .then(({data, status}) => {            
+                    if(status == 200){
+                        let {user:currentUser, token} = data
+                        return {currentUser, token}
+                    }                       
+                    return new Promise.reject("Please check form for errors");
+
+            }).catch(error => {                
+                return {currentUser: null, message : JSON.stringify(error.message)}
             });
     },
     login : (params) => {

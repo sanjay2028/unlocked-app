@@ -1,8 +1,8 @@
 import React from 'react';
-import InvestorProfile from './profiles/InvestorProfile';
+import UserProfile from './profiles/UserProfile';
 
 const Profile = () => {
-    return <InvestorProfile />
+    return <UserProfile />
 }
 
 export default Profile;

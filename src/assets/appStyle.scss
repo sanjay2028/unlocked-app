@@ -1,9 +1,10 @@
 @import '~bootstrap/scss/bootstrap.scss';
 @import url('~semantic-ui-css/semantic.min.css');
 @import url('./vendors/boostrap-select/bootstrap-select.css');
-@import './css/style.scss';
+@import 'css/style';
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap');
 @import 'form';
+@import 'loader';
 
 .container {
     max-width: 1245px !important;
@@ -17,6 +18,13 @@
     &.investor-account{
         &.investor-account-01{
             padding-top:0 !important;
+            padding-bottom:0 !important;
         }
     }
 } 
+
+/*/Pages /**/
+.page-deals.page-all-deals{
+    padding-top:8px !important;
+}
+

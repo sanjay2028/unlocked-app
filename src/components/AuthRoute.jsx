@@ -9,7 +9,7 @@ class AuthRoute extends Component{
       <Route
         {...rest}
         render={props =>
-          currentUser.id ? (
+          localStorage.getItem('auth_token')? (
             <Redirect to={`/user/dashboard`} />		  
           ) : (
             <Component {...props} />

@@ -1,0 +1,17 @@
+.loader{    
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(255,255,255,0.5);
+    .loader_content{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        img{
+            max-width:100px;
+            height:auto;
+        }
+    }
+    
+}
