@@ -24,13 +24,13 @@ class InvestorProfile extends Component{
                 {value : "Small", label: "<10K", heading:"Small", image:IconType1, current:true },
                 {value : "Medium", label: "<20K", heading:"Medium", image:IconType3, current:false },
                 {value : "Large", label: "<30K", heading:"Large", image:IconType3, current:false }    
-            ], assets_0: [               
+            ], assets_0: [
                 {value:"Industry", label: "Industry", selected : false},
                 {value:"Healthcare", label: "Healthcare",selected : false},
                 {value:"Infrastruture", label: "Infrastruture",selected : false},
                 {value:"Culture", label: "Culture",selected : false},
                 {value:"Technologies", label: "Technologies",selected : false}            
-            ], assets_1: [               
+            ], assets_1: [
                 {value:"Industry", label: "Industry", selected : false},
                 {value:"Healthcare", label: "Healthcare", selected : false},
                 {value:"Infrastruture", label: "Infrastruture", selected : false},
@@ -219,9 +219,9 @@ class InvestorProfile extends Component{
         const {notifications, investment_size, company_size, assets_0,assets_1} = this.state;
 
         return(
-            <div className="page-create-account investor-account investor-account-01">
-                <div className="form-normal form-create-account">
-                    <h1>Last small settings</h1>
+            <div className="page-create-account investor-account investor-account-01 ">
+                <div className="form-normal profile">
+                    <h1>How you want to be contacted about deals</h1>
                     <form onSubmit={this.handleSettings}>                        
                         <div className="all-fields">
                             <div className="field-group-item field-radio-option">                                
@@ -231,10 +231,10 @@ class InvestorProfile extends Component{
                                 <InvestmentSmall label="What's your typical size investment?" data={investment_size} handleChange={this.handleInvestmentSize} />
                             </div>
                             <div className="field-group-item">
-                                <InvestmentLarge label="What's your typical size investment?" data={company_size} handleChange={this.handleCompanySize } />                                                                
+                                <InvestmentLarge label="In What size Company do you typically invest?" data={company_size} handleChange={this.handleCompanySize } />
                             </div>
                             <div className="field-group-item">                                
-                                <AssetsDropdown label="What is your favourite asset?" data={assets_0} onChange={this.handleAssetsOne} />
+                                <AssetsDropdown label="What sectors of the market do you like?" data={assets_0} onChange={this.handleAssetsOne} />
                             </div>
                             <div className="field-group-item">                                
                                 <AssetsDropdown label="What sort of other assets do you usually invest in?" data={assets_1} onChange={this.handleAssetsTwo} />

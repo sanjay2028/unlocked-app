@@ -7,7 +7,7 @@
 /server/node_modules
 # testing
 /coverage
-
+/assets/css/style.scss;
 # production
 /build
 
