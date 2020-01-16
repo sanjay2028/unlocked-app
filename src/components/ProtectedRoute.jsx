@@ -4,25 +4,29 @@ import {connect} from 'react-redux';
 
 class ProtectedRoutes extends Component{ 
   render(){
-    let { component: Component, currentUser, ...rest } = this.props;
-    
+    let { component: Component, currentUser, isLoading, ...rest } = this.props;    
     return (
       <Route
         {...rest}
-        render={props =>
-          localStorage.getItem('auth_token') ? (
-            <Component {...props} />
-          ) : (
-            <Redirect to={`/auth/login?redirect=${props.location.pathname}`} />
-          )
+        render={props =>{   
+          console.log(props)         ;
+            if(isLoading === null) return null;                        
+            return (currentUser && currentUser.id !== undefined)? (
+              <Component {...props} />
+            ) : (
+              <Redirect to={`/auth/login?redirect=${props.location.pathname}`} />
+            )
+          }
         }
       />
     )
   }
 }
 
-const mapStateToProps = ({auth}) =>({
-  currentUser: auth.currentUser
+const mapStateToProps = ({auth, app}) =>({
+  currentUser: auth.currentUser,
+  roles : auth.roles,
+  isLoading: app.isLoading
 })
 
 export default connect(mapStateToProps, null)(ProtectedRoutes);

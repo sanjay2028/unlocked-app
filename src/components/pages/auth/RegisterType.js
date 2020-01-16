@@ -22,6 +22,7 @@ class RegisterType extends Component {
                             <Cardblock 
                                 heading="Investor" 
                                 excerpt="A little paragraph of text about who Investor is and what benefits he can take from this app" 
+                                buttonText="Continue as Investor"                                
                                 action={() => this.onUserTypeSelection(1)} 
                             />        
                         </div>
@@ -29,6 +30,7 @@ class RegisterType extends Component {
                             <Cardblock 
                                 heading="Broker" 
                                 excerpt="A little paragraph of text about who Broker is and what benefits he can take from this app" 
+                                buttonText="Continue as Broker"                                
                                 action={() => this.onUserTypeSelection(2)} 
                             />                                                            
                         </div>
@@ -36,6 +38,7 @@ class RegisterType extends Component {
                             <Cardblock 
                                 heading="Company" 
                                 excerpt="A little paragraph of text about who what Companies can take benefits from this app" 
+                                buttonText="Continue as Company"                                
                                 action={() => this.onUserTypeSelection(3)} 
                             />                            
                         </div>

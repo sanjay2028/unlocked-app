@@ -6,6 +6,7 @@ import Register from './components/pages/auth/Register';
 import ForgotPassword from './components/pages/auth/ForgotPassword';
 import Dashboard from './components/pages/protected/Dashboard';
 import Profile from './components/pages/protected/Profile';
+import Preferences from './components/pages/protected/Preferences';
 import ErrorPage from './components/pages/ErrorPage';
 import AuthRoute from './components/AuthRoute';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -31,6 +32,7 @@ class App extends Component {
             <ProtectedRoute exact path="/user/dashboard" location={location} component={Dashboard} />
             <ProtectedRoute exact path="/user/deals" location={location} component={DealsPage} />            
             <ProtectedRoute exact path="/user/profile" location={location} component={Profile} />        
+            <ProtectedRoute exact path="/user/preferences" location={location} component={Preferences} />        
             <Route path="*" component={ErrorPage} />        
           </Switch>
       );

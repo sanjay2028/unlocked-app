@@ -38,12 +38,13 @@ const registerFor = (dispatch, payload) => {
 
 const registerUser = (dispatch, payload) => {
     dispatch(registrationStarted);
-    auth.register(payload).then(data => {         
+    auth.register(payload).then(data => { 
+        console.log(data);
         let {token, currentUser, message=""} = data;
         if(token){                        
             localStorage.setItem('auth_token',token);            
-            localStorage.setItem('redirect',true);            
-            dispatch({type : UPDATE_AUTH, payload: currentUser});
+            localStorage.setItem('redirect',true);
+            dispatch({type : UPDATE_AUTH, payload: {currentUser}});
             dispatch({
                 type : REGISTRATION_SUCCESS                
             });     
@@ -84,13 +85,16 @@ const clearWarning = ({
 const getCurrentUser = (dispatch, payload) => {
     dispatch({type : APP_LOADING_STARTS})
     auth.me().then(payload => {
-        if(payload !== undefined){
+        let {currentUser} = payload;
+        if(currentUser && currentUser.id !== undefined){
             dispatch({type : UPDATE_AUTH, payload})    
+            dispatch({type : APP_LOADING_ENDS})
         } else {
             localStorage.removeItem('auth_token');
             dispatch({type : USER_LOGOUT})    
+            dispatch({type : APP_LOADING_ENDS})
         }
-        dispatch({type : APP_LOADING_ENDS})
+        
     }        
     ).catch(e => {        
         dispatch({type : USER_LOGOUT})

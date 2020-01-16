@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
+import {Redirect} from 'react-router-dom';
 import AssetsDropdown from '../../../forms/fields/AssetsDropdown';
 import InvestorNotifications from '../../../forms/fields/InvestorNotifications';
 import {InvestmentSmall, InvestmentLarge} from '../../../forms/fields/Investment';
 import {IconType1, IconType2, IconType3} from '../../../common/Graphics';
 import { connect } from 'react-redux';
-import { updateProfile } from '../../../../actions/profileActions';
+import { updatePreferences, clearAlert } from '../../../../actions/profileActions';
+import Alert from '../../../common/Alert';
 
-class InvestorProfile extends Component{
+class InvestorPreferences extends Component{
 
     constructor(props){
         super(props);
@@ -210,18 +212,24 @@ class InvestorProfile extends Component{
             markets : ["market 1", "market2"]
         }
 
-        this.props.updateProfile(payload);
+        this.props.updatePreferences(payload);
 
+    }
+    
+    handleAlert = ()=> {
+        this.props.clearAlert();
     }
 
     render(){
 
-        const {notifications, investment_size, company_size, assets_0,assets_1} = this.state;
-
-        return(
+        const {notifications,investment_size, company_size, assets_0,assets_1} = this.state;
+        const { preferences } = this.props;
+        if(preferences.success===true) return <Redirect to="/user/dashboard" /> 
+        return(            
             <div className="page-create-account investor-account investor-account-01 ">
-                <div className="form-normal profile">
-                    <h1>How you want to be contacted about deals</h1>
+                <div className="form-normal form-create-account">
+                    <h1>Last small settings</h1>
+                    { preferences.message && <Alert type={preferences.success ? 'success' : 'warning'} message={preferences.message} action={this.handleAlert} />}                    
                     <form onSubmit={this.handleSettings}>                        
                         <div className="all-fields">
                             <div className="field-group-item field-radio-option">                                
@@ -243,11 +251,8 @@ class InvestorProfile extends Component{
                         <div className="row is-button-group">
                             <div className="button-group">
                                 <div className="col-xs-12 col-sm-6 col-md-6">
-                                    <button className="btn btn-primary btn-medium">Save and continue</button>
-                                </div>
-                                <div className="col-xs-12 col-sm-6 col-md-6">
-                                    <button className="btn btn-outline-primary btn-medium">Cancel</button>
-                                </div>
+                                    <button disabled={preferences.isProcessing} className="btn btn-primary btn-medium">Save and continue</button>
+                                </div>                                
                             </div>
                         </div>
                     </form>
@@ -259,11 +264,13 @@ class InvestorProfile extends Component{
 }
 
 const mapStateToProps = ({auth}) => ({
-    currentUser : auth.currentUser
+    currentUser : auth.currentUser,
+    preferences : auth.preferences
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    updateProfile : (payload) => updateProfile(dispatch, payload)
+    updatePreferences : (payload) => updatePreferences(dispatch, payload),
+    clearAlert: () => dispatch(clearAlert)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(InvestorProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(InvestorPreferences);

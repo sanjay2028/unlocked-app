@@ -14,9 +14,11 @@ const auth = {
             if(status == 200){
                 return {currentUser : data}
             }
-            return new Promise.reject("Unauthorized");
+            return{currentUser : {}, error: "Unauthorized"};
         })        
-        .catch(error => error)
+        .catch(error => ({
+            currentUser : {}, error
+        }))
 
     },profile: {
 
@@ -50,21 +52,21 @@ const auth = {
                         .then((response) => {                    
                             let {data, status} = response;
                             if(status == 200){
-                                return {currentUser : data}
-                            }                     
+                                return {currentUser : data, message : "PReferences Updated successfully", error:null}
+                            } 
+                            return {currentUser : null, message:null, error:"Failed"}                     
                         })        
-                        .catch(error => ({currentUser : null, error}))
+                        .catch(error => ({currentUser : null, message:null, error}))
             
     },
     register : (params) => {        
         return axios        
                 .post(`${BaseUrl}frontend/v1/register`,params)
                 .then(({data, status}) => {            
-                    if(status == 200){
-                        let {user:currentUser, token} = data
-                        return {currentUser, token}
+                    if(status == 200){                        
+                        return {currentUser:data.user, token:data.token}
                     }                       
-                    return new Promise.reject("Please check form for errors");
+                    return{currentUser : {}, error: "Unauthorized"};
 
             }).catch(error => {                
                 return {currentUser: null, message : JSON.stringify(error.message)}

@@ -7,7 +7,8 @@ import {
 } from '../../actions/constants';
 
 const initialState = {
-    currentUser: {},    
+    currentUser: {},
+    roles : null,    
     loading: false,
     notification : "",
     loginError : null,
@@ -32,9 +33,14 @@ const authReducer = (state = initialState, {type, payload=null}) => {
                 ...state, notification : null, warning: null, loginError: null
             }; 
 
-        case UPDATE_AUTH:            
+        case UPDATE_AUTH:                
+            let { role } = payload.currentUser;
+            let userRoles = [4];            
+            role.forEach((v, i) => {
+                userRoles.push(v.pivot.role_id);
+            });
             return {
-                ...state, ...payload
+                ...state, ...payload, roles : userRoles
             }
 
         case USER_LOGOUT:               
@@ -85,23 +91,23 @@ const authReducer = (state = initialState, {type, payload=null}) => {
             }       
         case START_PREFERENCE_UPDATE:
             return {
-                ...state.preferences, isProcessing: true                
+                ...state, preferences : {...state.preferences, isProcessing: true } 
             }       
         case END_PREFERENCE_UPDATE:
             return {
-                ...state.preferences, isProcessing: false                
+                ...state, preferences : {...state.preferences, isProcessing: false } 
             }      
         case PREFERENCE_UPDATE_SUCCESS:
-            return {
-                ...state.preferences, success: true, message : payload                
+            return {                                
+                ...state, preferences : {...state.preferences, success: true, message : payload } 
             }       
         case PREFERENCE_UPDATE_FAILED:
             return {
-                ...state.preferences, success: false, message : payload
+                ...state, preferences : {...state.preferences, success: false, message : payload }                 
             }
         case CLEAR_PREFERENCE_ALERT:            
             return {
-                ...state, profile : {isProcessing: false, success:null, error: null, message:null}
+                ...state, preferences : {isProcessing: false, success:null, error: null, message:null}
             }              
         default:
             return state;

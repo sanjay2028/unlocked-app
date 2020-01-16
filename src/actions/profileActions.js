@@ -9,20 +9,20 @@ import auth from '../services/authService';
 
 const updatePreferences = (dispatch, payload) => {
     dispatch({type : START_PREFERENCE_UPDATE});
-    auth.settings.investor(payload)
-    .then(({currentUser}) => {
+    auth.preferences.investor(payload)
+    .then((data) => {
+        let {currentUser} = data;
         if(currentUser !== null){
-            dispatch({type : UPDATE_AUTH, payload:currentUser});
-            dispatch({type : PREFERENCE_UPDATE_SUCCESS});
+            dispatch({type : UPDATE_AUTH, payload : {currentUser: currentUser.data}});
+            dispatch({type : PREFERENCE_UPDATE_SUCCESS, payload : data.message});            
+        } else {            
+            dispatch({type : PREFERENCE_UPDATE_FAILED, payload : data.error});
         }
-
         dispatch({type : END_PREFERENCE_UPDATE});
-        dispatch({type : PREFERENCE_UPDATE_FAILED});
     })
-    .catch(error => {
-        console.log("Preference End Error: ", error)        
+    .catch(error => {        
         dispatch({type : END_PREFERENCE_UPDATE});
-        dispatch({type : PREFERENCE_UPDATE_FAILED});
+        dispatch({type : PREFERENCE_UPDATE_FAILED, payload : error});
     });
 }
 
