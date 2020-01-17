@@ -25,7 +25,7 @@ export default({buttonLabel, onSubmit, invalid}) => {
                 </div>               
                 <div className="row">
                     <div className="col-sm-12">
-                        <InputField name="address" label="Address" type="text" />
+                        <InputField name="address" label="Address" type="text" validate={requiredAddress} />
                     </div>                                        
                 </div>  
             </div>    
