@@ -16,13 +16,14 @@ const initialState = {
         isProcessing : false,
         success: null, 
         error: null,
-        message: null
+        message: null,
+        errors : []
     },
     preferences: {
         isProcessing : false,
         success: null, 
         error: null,
-        message: null
+        message: null        
     }
 }
 
@@ -34,7 +35,7 @@ const authReducer = (state = initialState, {type, payload=null}) => {
             }; 
 
         case UPDATE_AUTH:                
-            let { role } = payload.currentUser;
+            let { role } = payload.currentUser;            
             let userRoles = [4];            
             role.forEach((v, i) => {
                 userRoles.push(v.pivot.role_id);
@@ -43,13 +44,15 @@ const authReducer = (state = initialState, {type, payload=null}) => {
                 ...state, ...payload, roles : userRoles
             }
 
-        case USER_LOGOUT:               
+        case USER_LOGOUT:
+            console.log("LOgged Out called");
             return initialState;
         
         case USER_LOGIN_SUCCESS:            
             return {
                 ...state, ...payload
-            };                    
+            };               
+
         case USER_LOGIN_FAILED:            
             return {
                 ...state, currentUser : {}, loginError : payload
@@ -71,11 +74,11 @@ const authReducer = (state = initialState, {type, payload=null}) => {
             }; 
         case START_PROFILE_UPDATE:            
             return {
-                ...state, profile : {isProcessing: true, success:null, error: null, message:null}
+                ...state, profile : {isProcessing: true, success:null, error: null, errors:[], message:null}
             }       
         case CLEAR_PROFILE_ALERT:            
             return {
-                ...state, profile : {isProcessing: false, success:null, error: null, message:null}
+                ...state, profile : {isProcessing: false, success:null, error: null, errors:[], message:null}
             }       
         case END_PROFILE_UPDATE:            
             return {
@@ -83,11 +86,11 @@ const authReducer = (state = initialState, {type, payload=null}) => {
             }       
         case PROFILE_UPDATE_SUCCESS:
             return {
-                ...state, profile : {...state.profile, success: true, message : payload}
+                ...state, profile : {...state.profile, success: true, message : payload, error: null, errors:[]}
             }                   
         case PROFILE_UPDATE_FAILED:
             return {
-                ...state, profile : {...state.profile, success: false, message : payload}
+                ...state, profile : {...state.profile, success: false,message: null, error : payload.message, errors: payload.errors}
             }       
         case START_PREFERENCE_UPDATE:
             return {

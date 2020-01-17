@@ -33,19 +33,37 @@ const clearAlert = {
 const updateProfile = (dispatch, payload) => {
     dispatch({type : START_PROFILE_UPDATE});
     auth.profile.broker(payload)
-    .then(({currentUser}) => {        
+    .then(({currentUser, message, errors}) => {        
         if(currentUser !== null){
-            dispatch({type : UPDATE_AUTH, payload:currentUser});
+            dispatch({type : UPDATE_AUTH, payload:{currentUser: currentUser.data}});
             dispatch({type : PROFILE_UPDATE_SUCCESS, payload: "Profile updated successfully"});
+            dispatch({type : END_PROFILE_UPDATE});
         } else {
-            dispatch({type : PROFILE_UPDATE_FAILED, payload});
-        }
-        dispatch({type : END_PROFILE_UPDATE});                
+            return Promise.reject({message, errors});
+        }                 
     })
-    .catch(error => {
+    .catch(({errors, message}) => {
+        dispatch({type : PROFILE_UPDATE_FAILED, payload:{message, errors}});
         dispatch({type : END_PROFILE_UPDATE});
-        dispatch({type : PROFILE_UPDATE_FAILED, payload: error});
     });
 }
 
-export {updateProfile, updatePreferences, clearAlert }
+const updateInvstorProfile = (dispatch, payload) => {
+    dispatch({type : START_PROFILE_UPDATE});
+    auth.profile.investor(payload)
+    .then(({currentUser, message, errors}) => {                
+        if(currentUser !== null){
+            dispatch({type : UPDATE_AUTH, payload:{currentUser: currentUser.data}});
+            dispatch({type : PROFILE_UPDATE_SUCCESS, payload: "Profile updated successfully"});
+            dispatch({type : END_PROFILE_UPDATE});
+        } else {
+            return Promise.reject({message, errors});
+        }                        
+    })
+    .catch(({errors, message}) => {        
+        dispatch({type : PROFILE_UPDATE_FAILED, payload:{message, errors}});
+        dispatch({type : END_PROFILE_UPDATE});
+    });
+}
+
+export {updateProfile, updateInvstorProfile, updatePreferences, clearAlert }

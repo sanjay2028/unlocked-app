@@ -26,32 +26,32 @@ const UserHeader = () => {
 }
 
 class Header extends Component{    
-	render(){
-		const { currentUser } = this.props;
-		return currentUser? <UserHeader /> : 
-			<header classNameName="page-header clearfix">
-				<div classNameName="md-header-desktop clearfix d-none d-lg-block">
-					<div classNameName="container">
+	render(){		
+		let {currentUser} = this.props;
+		return (!!Object.keys(currentUser).length) ? <UserHeader /> : 
+			<header className="page-header clearfix">
+				<div className="md-header-desktop clearfix d-none d-lg-block">
+					<div className="container">
 						<BrandLogo />
-						<div classNameName="main-nav-desktop">
+						<div className="main-nav-desktop">
 							<Navigation />
 							<ToggleSearch />
-							<div classNameName="account"><LoginButton /></div>							
+							<div className="account"><LoginButton /></div>							
 						</div>
 					</div>
 				</div>
-				<div classNameName="md-header-mobile d-block d-lg-none">
-					<div classNameName="top-navtigation">
-						<div classNameName="container">                        
-							<div classNameName="ctn-inner">
+				<div className="md-header-mobile d-block d-lg-none">
+					<div className="top-navtigation">
+						<div className="container">                        
+							<div className="ctn-inner">
 								<BrandLogo /> <MenuToggle />
 							</div>
 						</div>
 					</div>
-					<div classNameName="main-nav-mobile">
-						<div classNameName="container">
+					<div className="main-nav-mobile">
+						<div className="container">
 							<Navigation />
-							<div classNameName="smd-search"><Search /></div>
+							<div className="smd-search"><Search /></div>
 						</div>
 					</div>
 				</div>

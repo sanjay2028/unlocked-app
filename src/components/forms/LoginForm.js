@@ -3,7 +3,7 @@ import InputField from './fields/InputField';
 import {Link} from 'react-router-dom';
 import {requiredEmail, requiredPassword} from './fields/validations';
 
-export default ({buttonLabel, onSubmit, invalid}) => {
+export default ({buttonLabel, onSubmit, invalid}) => {    
     return (
         <form onSubmit={onSubmit}>
             <div className="all-fields">

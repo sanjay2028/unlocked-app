@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect,withRouter } from 'react-router-dom';
 import { clearWarning,clearNotification,loginUser } from '../../../actions/authActions';
 import Alert from '../../common/Alert';
 import LoginForm from '../../forms/LoginForm';
@@ -17,8 +17,13 @@ class Login extends Component{
     }   
 
     render(){        
-        const {notification, currentUser, loginError} = this.props.auth;        
-        return (
+        console.log("ere");
+        const {notification, currentUser, loginError} = this.props;  
+        const {history} = this.props;
+        if (!!Object.keys(currentUser).length) history.push('/user/dashboard');
+         
+         return (
+            
             <div className="page-login page-signup">            
                 <div className="form-normal form-login">
                     <h1>Login</h1>                    
@@ -47,8 +52,10 @@ class Login extends Component{
     }
 }
 
-const mapStateToProps = (state) => ({
-    auth : state.auth
+const mapStateToProps = ({auth}) => ({
+    currentUser : auth.currentUser,
+    notification: auth.notification,
+    loginError: auth.loginError
 });
 
 const mapDispatchToProps = (dispatch) => ({

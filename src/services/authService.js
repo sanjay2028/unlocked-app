@@ -25,24 +25,29 @@ const auth = {
         broker :    (payload)=>
                         axios
                         .post(`${BaseUrl}frontend/v1/brokers/profile`,payload, config)
-                        .then(({data, status}) => {
-                            if(status == 200){
-                                return {currentUser : data}
-                            }       
-                            return new Promise.reject("Unauthorized");
+                        .then(({data, status}) => {                            
+                            if(status == 200){                                
+                                return {currentUser : data, message:'Settings updated successfully', errors:[]}
+                            }                                   
                         })        
-                        .catch(error => error),
+                        .catch(error => {
+                            console.log("Error", error)
+                            let {message, errors} = error.response.data;                            
+                            return {currentUser : null, message, errors};
+                        }),
 
         investor :  (payload) =>
                         axios
                         .post(`${BaseUrl}frontend/v1/investors/profile`, payload, config)
                         .then(({data, status}) => {
                             if(status == 200){
-                                return {currentUser : data}
-                            }       
-                            return new Promise.reject("Unauthorized");
+                                return {currentUser : data, message:'Settings updated successfully', errors:[]}
+                            }                                   
                         })        
-                        .catch(error => error)        
+                        .catch(error => {
+                            let {message, errors} = error.response.data;                            
+                            return {currentUser : null, message, errors};
+                        })
                      
     },preferences: {
 

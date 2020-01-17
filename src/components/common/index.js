@@ -3,7 +3,7 @@ import Logo from "../../assets/images/logo.png";
 import {LogoUnlocked, DefaultAvator} from '../common/Graphics';
 import { Link } from 'react-router-dom';
 
-const BrandLogo =  ({auth=true}) => <div className="logo"><Link to={auth? '/user/dashboard' : '/'}><img src={auth? LogoUnlocked : Logo} alt="Home" /></Link></div>
+const BrandLogo =  ({auth=true}) => <div className="logo"><Link to={auth? '/user/profile' : '/'}><img src={auth? LogoUnlocked : Logo} alt="Home" /></Link></div>
 
 const Search  = () => {
     return (
@@ -39,7 +39,7 @@ const MenuToggle = () => {
 
 const Avator = ({avatorUrl=DefaultAvator}) => 
     <div className="avatar">
-        <Link to="/user/dashboard">
+        <Link to="/user/profile">
             <img src={avatorUrl} alt="" />
         </Link>
     </div>

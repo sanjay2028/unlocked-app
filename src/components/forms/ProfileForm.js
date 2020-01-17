@@ -44,18 +44,18 @@ export default ({buttonLabel=null, onSubmit, values=[], invalid=null}) => {
                             </div>
                         </div>
                         <div className="col-sm-6">
-                            <div class="field">
-								<label class="title">Upload Company Logo</label>
-								<div class="field-input is-field-upload">
-									<div class="text-upload">
-										<div class="icon">
+                            <div className="field">
+								<label className="title">Upload Company Logo</label>
+								<div className="field-input is-field-upload">
+									<div className="text-upload">
+										<div className="icon">
 											<img src={IconUpload} alt="Upload Here" />
 										</div>
 										<p>Click and drag a logo to this area or choose from a library</p>
 									</div>
-									<div class="file-upload">
-										<label for="file-upload-01" class="btn btn-outline-primary">Choose logo</label>
-										<input type="file" class="input-file" id="file-upload-01" />
+									<div className="file-upload">
+										<label htmlFor="file-upload-01" className="btn btn-outline-primary">Choose logo</label>
+										<input type="file" className="input-file" id="file-upload-01" />
 									</div>
 								</div>
 

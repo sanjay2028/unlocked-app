@@ -10,17 +10,20 @@ class AuthRoute extends Component{
         {...rest}
         render={props =>{
             
-          if(isLoading) return null;
+          if(isLoading === null || isLoading === true) return null;
 
             if(currentUser && currentUser.id !== undefined){
               let redirect = localStorage.getItem('redirect');
-              if(redirect){
-                  if((roles.indexOf(3) !== -1)){
-                    localStorage.removeItem('redirect');
-                    return <Redirect to={`/user/preferences`} />
+              
+              if((roles.indexOf(3) !== -1)){
+                  if(redirect){
+                      localStorage.removeItem('redirect');
+                      return <Redirect to={`/user/preferences`} />
                   } else {
-                    return <Redirect to={`/user/deals`} />		                    
+                    return <Redirect to={`/user/profile`} />
                   }
+              } else {
+                return <Redirect to={`/user/dashboard`} />		                    
               }
             } else {
               return <Component {...props} />

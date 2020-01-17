@@ -8,9 +8,8 @@ class ProtectedRoutes extends Component{
     return (
       <Route
         {...rest}
-        render={props =>{   
-          console.log(props)         ;
-            if(isLoading === null) return null;                        
+        render={props =>{             
+            if(isLoading === null || isLoading === true) return null;                        
             return (currentUser && currentUser.id !== undefined)? (
               <Component {...props} />
             ) : (

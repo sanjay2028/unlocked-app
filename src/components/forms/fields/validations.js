@@ -44,6 +44,18 @@ const requiredPhone = value => {
     return "Phone number is required";        
 }
 
+const requiredAddress = value => {    
+    if(value){
+        let entry = value.trim();
+        if(entry){
+            let pattern = /^[#.0-9a-zA-Z\s,-]+$/
+            return pattern.test(entry)? undefined : "Invalid Address number";
+        }
+    }    
+    return "Address is required field";        
+}
+
+
 const requiredPassword = value => {    
     if(value){        
         let entry = value.trim();
@@ -78,4 +90,4 @@ const validateForm = values => {
   }
 
 
-  export {required, requiredCompany, requiredName, requiredEmail, requiredPhone, requiredPassword, validateForm}
+  export {required, requiredCompany, requiredName, requiredEmail, requiredPhone, requiredPassword, validateForm, requiredAddress}

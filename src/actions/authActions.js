@@ -111,7 +111,7 @@ const loginUser = (dispatch, payload) => {
         if(token){                        
             localStorage.setItem('auth_token',token);            
             dispatch({
-                type : USER_LOGIN_SUCCESS,
+                type : UPDATE_AUTH,
                 payload, 
             });            
         } else if(success == false){

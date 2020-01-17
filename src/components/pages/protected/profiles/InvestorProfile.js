@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import ProfileForm from '../../../forms/ProfileForm';
+import InvestorProfileForm from '../../../forms/InvestorProfileForm';
 import { connect } from 'react-redux';
 import { Form } from 'react-final-form';
-import {updateProfile, clearAlert} from '../../../../actions/profileActions';
+import {updateInvstorProfile, clearAlert} from '../../../../actions/profileActions';
 import Alert from '../../../common/Alert';
 
-class UserProfile extends Component{
+class InvestorProfile extends Component{
 
     constructor(props){
         super(props);
@@ -15,24 +15,14 @@ class UserProfile extends Component{
                 last_name : null,
                 email : null,
                 phone : null,
-                company_name : null,
-                description : null,
-                logo : null
-                }
+                address : null,                
+            }
         }
     }
 
-    componentDidMount(){        
-        let { currentUser } = this.props;
-        let profile  = {
-                first_name : currentUser.first_name,
-                last_name : currentUser.last_name,
-                email : currentUser.email,
-                company_name : currentUser.company_name,
-                phone : currentUser.phone,
-                description : currentUser.description
-        };
-        
+    componentDidMount(){                
+        let { first_name,last_name, email, phone, address } = this.props.currentUser;        
+        let profile  = {first_name, last_name,email,phone,address};        
         this.setState({
             profile
         });
@@ -47,8 +37,15 @@ class UserProfile extends Component{
         this.props.clearAlert();
     }
 
+    validateForm = (values) => {
+        const errors = {};
+        
+        return errors;
+    }
+
     render(){       
         const {profile} = this.props;
+        console.log("Profile", this.state.profile);
         return(
             <div className="page-create-account investor-account investor-account-01">
                 <div className="form-normal form-create-account">
@@ -56,10 +53,11 @@ class UserProfile extends Component{
                     { profile.error && <Alert type='danger' message={"Failed: "+ profile.error} action={this.handleAlert} />}
                     <Form
                         initialValues={this.state.profile}
+                        validate={this.validateForm}
                         onSubmit={this.handleSubmit}                         
                         render={
                             ({handleSubmit, ...rest}) => {
-                                return <ProfileForm 
+                                return <InvestorProfileForm 
                                             onSubmit={handleSubmit} 
                                             buttonLabel="Update Settings"
                                             {...rest}                                            
@@ -79,8 +77,8 @@ const mapStateToProps = ({auth, app}) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    updateProfile: (payload) => updateProfile(dispatch,payload),
+    updateProfile: (payload) => updateInvstorProfile(dispatch,payload),
     clearAlert: () => dispatch(clearAlert)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(InvestorProfile);

@@ -16,14 +16,15 @@ class AppLayout extends Component{
     }
 
     render(){        
-        const { currentUser } = this.props.auth;        
+        const { currentUser, roles } = this.props.auth;        
         const { isLoading } = this.props.app;        
-        return  isLoading ? 
+        const { logoutUser } = this.props;        
+        return  isLoading==null || isLoading == true ? 
                 <Loader /> : 
                 <Fragment>
                     <Header currentUser={currentUser} />
                     <Content><App /></Content>
-                    <Footer/>
+                    <Footer currentUser={currentUser} roles={roles} onLogout={logoutUser} />
                 </Fragment>
         
     }
