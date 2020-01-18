@@ -17,7 +17,7 @@ const FooterInvestorNav = ({logoutAction}) => {
     return (
         <ul className="clearfix">
 			<li><Link to="/user/profile">Profile</Link></li>
-			<li><Link to="/user/profile">Preferences</Link></li>
+			<li><Link to="/user/preferences">Preferences</Link></li>
 			<li><Link to="/user/upgrade">Upgrade</Link></li>
 		    <li><Link href="#" onClick={() => logoutAction()}>Logout</Link></li>		    
         </ul>

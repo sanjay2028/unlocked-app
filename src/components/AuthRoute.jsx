@@ -23,7 +23,7 @@ class AuthRoute extends Component{
                     return <Redirect to={`/user/profile`} />
                   }
               } else {
-                return <Redirect to={`/user/dashboard`} />		                    
+                return <Redirect to={`/user/deals`} />		                    
               }
             } else {
               return <Component {...props} />

@@ -1,7 +1,14 @@
 import axios from 'axios';
 import { BaseUrl } from './settings';
 const config = {
+    headers: {        
+      Authorization: "Bearer " + localStorage.getItem('auth_token')
+    }
+};
+
+const configMultipart = {
     headers: {
+      'Accept': 'application/json',
       Authorization: "Bearer " + localStorage.getItem('auth_token')
     }
 };
@@ -22,9 +29,20 @@ const auth = {
 
     },profile: {
 
-        broker :    (payload)=>
-                        axios
-                        .post(`${BaseUrl}frontend/v1/brokers/profile`,payload, config)
+        broker :    ({first_name, last_name,phone,email, company_name, description, logo=null})=>{                        
+                        let bodyFormData = new FormData();
+                        bodyFormData.set('first_name', first_name); 
+                        bodyFormData.set('last_name', last_name); 
+                        bodyFormData.set('email', email); 
+                        bodyFormData.set('company_name', company_name); 
+                        bodyFormData.set('phone', phone); 
+                        bodyFormData.set('description', description); 
+                        if(logo !== null){
+                            bodyFormData.append('logo', logo); 
+                        }
+                        
+                        return axios
+                        .post(`${BaseUrl}frontend/v1/brokers/profile`,bodyFormData, configMultipart)
                         .then(({data, status}) => {                            
                             if(status == 200){                                
                                 return {currentUser : data, message:'Settings updated successfully', errors:[]}
@@ -34,7 +52,7 @@ const auth = {
                             console.log("Error", error)
                             let {message, errors} = error.response.data;                            
                             return {currentUser : null, message, errors};
-                        }),
+                        })},
 
         investor :  (payload) =>
                         axios

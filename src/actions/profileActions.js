@@ -35,7 +35,8 @@ const updateProfile = (dispatch, payload) => {
     auth.profile.broker(payload)
     .then(({currentUser, message, errors}) => {        
         if(currentUser !== null){
-            dispatch({type : UPDATE_AUTH, payload:{currentUser: currentUser.data}});
+            let {first_name, last_name, email, phone, company, description, logo_url} = currentUser.data;
+            dispatch({type : 'UPDATE_BROKER_PROFILE', payload:currentUser.data});
             dispatch({type : PROFILE_UPDATE_SUCCESS, payload: "Profile updated successfully"});
             dispatch({type : END_PROFILE_UPDATE});
         } else {
@@ -53,7 +54,8 @@ const updateInvstorProfile = (dispatch, payload) => {
     auth.profile.investor(payload)
     .then(({currentUser, message, errors}) => {                
         if(currentUser !== null){
-            dispatch({type : UPDATE_AUTH, payload:{currentUser: currentUser.data}});
+            let {first_name, last_name, email, phone, address} = currentUser.data;
+            dispatch({type : 'UPDATE_INVESTOR_PROFILE', payload:{first_name, last_name, email, phone, address}});
             dispatch({type : PROFILE_UPDATE_SUCCESS, payload: "Profile updated successfully"});
             dispatch({type : END_PROFILE_UPDATE});
         } else {

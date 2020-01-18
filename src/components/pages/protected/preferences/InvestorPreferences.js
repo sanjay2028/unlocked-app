@@ -26,13 +26,13 @@ class InvestorPreferences extends Component{
                 {value : "Small", label: "<10K", heading:"Small", image:IconType1, current:true },
                 {value : "Medium", label: "<20K", heading:"Medium", image:IconType3, current:false },
                 {value : "Large", label: "<30K", heading:"Large", image:IconType3, current:false }    
-            ], assets_0: [
+            ], assets: [
                 {value:"Industry", label: "Industry", selected : false},
                 {value:"Healthcare", label: "Healthcare",selected : false},
                 {value:"Infrastruture", label: "Infrastruture",selected : false},
                 {value:"Culture", label: "Culture",selected : false},
                 {value:"Technologies", label: "Technologies",selected : false}            
-            ], assets_1: [
+            ], markets: [
                 {value:"Industry", label: "Industry", selected : false},
                 {value:"Healthcare", label: "Healthcare", selected : false},
                 {value:"Infrastruture", label: "Infrastruture", selected : false},
@@ -43,7 +43,7 @@ class InvestorPreferences extends Component{
     }
 
     componentDidMount(){
-        let {notifications, investment_size, company_type, assets_0, assets_1} = this.props.currentUser;
+        let {notifications, investment_size, company_type, assets, markets} = this.props.currentUser;
         let newState = {}
         newState.notifications = this.state.notifications.map(item => {
             if(item.value == notifications) 
@@ -71,13 +71,10 @@ class InvestorPreferences extends Component{
             return item;
         })
 
-        console.log(assets_0);
-
-        if(assets_0 !== undefined){
-            let assetsOne = assets_0.split(",");
-            if(assetsOne.length > 0){
-                newState.assets_0 = this.state.assets_0.map(item => {
-                    if(assetsOne.indexOf(item.value) !== -1) 
+        if(assets !== undefined){            
+            if(assets.length > 0){
+                newState.assets = this.state.assets.map(item => {
+                    if(assets.indexOf(item.value) !== -1) 
                         item.selected = true; 
                     else 
                         item.current = false;
@@ -87,11 +84,10 @@ class InvestorPreferences extends Component{
             }
         }
         
-        if(assets_1 !== undefined){
-            let assetsTwo = assets_1.split(",");
-            if(assetsTwo.length > 0){
-                newState.assets_1 = this.state.assets_1.map(item => {
-                    if(assetsTwo.indexOf(item.value) !== -1) 
+        if(markets !== undefined){            
+            if(markets.length > 0){
+                newState.markets = this.state.markets.map(item => {
+                    if(markets.indexOf(item.value) !== -1) 
                         item.selected = true; 
                     else 
                         item.current = false;
@@ -151,21 +147,20 @@ class InvestorPreferences extends Component{
         });   
     }
 
-    filterDropdown = (chosenOptions,options) => {
-        return options.map(item => {
-            item.selected = (chosenOptions.indexOf(item.value) == -1)? false : true                
+    handleAssets = (options) => { 
+        let newAssets = this.state.assets.map(item => {
+            item.selected = (options.indexOf(item.value) == -1)? false : true                
             return item;
         })
-    }
-
-    handleAssetsOne = (options) => {        
-        let newAssets = this.filterDropdown(options, this.state.assets_0);        
         this.setState({assets_0 : newAssets})   
     }
 
-    handleAssetsTwo = (options) => {
-        let newAssets = this.filterDropdown(options,this.state.assets_1);
-        this.setState({assets_1 : newAssets})   
+    handleMarkets = (options) => {        
+        let newMarkets = this.state.markets.map(item => {
+            item.selected = (options.indexOf(item.value) == -1)? false : true;
+            return item;
+        });
+        this.setState({markets : newMarkets});
     }
 
     getSettings(setting){
@@ -176,24 +171,23 @@ class InvestorPreferences extends Component{
                 option = this.state.notifications.filter(item => item.current == true);                
                 return option && option[0]? option[0].value: null;            
             case 'investment_size':                
-                option = this.state.investment_size.filter(item => item.current == true);
-                console.log("size", option);
+                option = this.state.investment_size.filter(item => item.current == true);                
                 return option && option[0]? option[0].value: null;            
             case 'company_size':
                 option = this.state.company_size.filter(item => item.current == true);
                 return option && option[0]? option[0].value: null;            
-            case 'assets_0':                
-                option = this.state.assets_0.filter(item => item.selected == true);                                
+            case 'assets':                
+                option = this.state.assets.filter(item => item.selected == true);                                
                 for(let item of option){
                     optArray.push(item.value);
                 }
-                return optArray.join(",");
-            case 'assets_1':
-                option = this.state.assets_1.filter(item => item.selected == true);                                
+                return optArray;
+            case 'markets':
+                option = this.state.markets.filter(item => item.selected == true);                                
                 for(let item of option){
                     optArray.push(item.value);
                 }
-                return optArray.join(",");
+                return optArray;
             default : 
                 return;
 
@@ -204,13 +198,17 @@ class InvestorPreferences extends Component{
     handleSettings = (e) => {
         e.preventDefault();
         let payload = {}        
+
+
         payload = {
             notifications   : this.getSettings('notifications'),
             investment_size : this.getSettings('investment_size'),
             company_type    : this.getSettings('company_size'),
-            assets : [this.getSettings('assets_0'), this.getSettings('assets_1')],
-            markets : ["market 1", "market2"]
+            assets          : this.getSettings('assets'), 
+            markets         : this.getSettings('markets')
         }
+
+        console.log(payload);
 
         this.props.updatePreferences(payload);
 
@@ -222,7 +220,7 @@ class InvestorPreferences extends Component{
 
     render(){
 
-        const {notifications,investment_size, company_size, assets_0,assets_1} = this.state;
+        const {notifications,investment_size, company_size, assets,markets} = this.state;        
         const { preferences } = this.props;
         if(preferences.success===true) return <Redirect to="/user/dashboard" /> 
         return(            
@@ -242,10 +240,10 @@ class InvestorPreferences extends Component{
                                 <InvestmentLarge label="In What size Company do you typically invest?" data={company_size} handleChange={this.handleCompanySize } />
                             </div>
                             <div className="field-group-item">                                
-                                <AssetsDropdown label="What sectors of the market do you like?" data={assets_0} onChange={this.handleAssetsOne} />
+                                <AssetsDropdown label="What sectors of the market do you like?" data={assets} onChange={this.handleAssets} />
                             </div>
                             <div className="field-group-item">                                
-                                <AssetsDropdown label="What sort of other assets do you usually invest in?" data={assets_1} onChange={this.handleAssetsTwo} />
+                                <AssetsDropdown label="What sort of other assets do you usually invest in?" data={markets} onChange={this.handleMarkets} />
                             </div>
                         </div>
                         <div className="row is-button-group">

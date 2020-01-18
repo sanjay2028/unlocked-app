@@ -32,7 +32,7 @@ class Dropdown extends Component{
         this.props.handleChange(optedOptions);
     }
 
-    render(){
+    render(){            
             const { data } = this.props;
             let options =   this.props.data.map(({value, label, selected}, index) =>
                         (selected)?

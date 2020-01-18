@@ -18,12 +18,15 @@ class UserProfile extends Component{
                 company_name : null,
                 description : null,
                 logo : null
-                }
+            }, uploaded : {
+                newFile : null
+            },logo_url: null
         }
     }
 
     componentDidMount(){        
         let { currentUser } = this.props;
+        console.log("Current User", currentUser);
         let profile  = {
                 first_name : currentUser.first_name,
                 last_name : currentUser.last_name,
@@ -33,18 +36,31 @@ class UserProfile extends Component{
                 description : currentUser.description
         };
         
+        
         this.setState({
-            profile
+            profile, logo_url : currentUser.logo_url
         });
     }
 
-    handleSubmit = (values) => {                
+    handleSubmit = (values) => {   
+        let {newFile} = this.state.uploaded;             
+        if(newFile !== null){            
+            values.logo = newFile            
+        } else {
+            values.logo = null
+        }        
         this.props.updateProfile(values);
     } 
 
 
     handleAlert = ()=> {
         this.props.clearAlert();
+    }
+
+    onLogoUpload = (event)=>{        
+        return this.setState({
+            uploaded : {newFile : event.target.files[0]}
+        });
     }
 
     render(){       
@@ -59,7 +75,9 @@ class UserProfile extends Component{
                         onSubmit={this.handleSubmit}                         
                         render={
                             ({handleSubmit, ...rest}) => {
-                                return <ProfileForm 
+                                return <ProfileForm
+                                            logoUrl={this.props.logo_url}
+                                            onLogoUpload={this.onLogoUpload} 
                                             onSubmit={handleSubmit} 
                                             buttonLabel="Update Settings"
                                             {...rest}                                            
@@ -75,6 +93,7 @@ class UserProfile extends Component{
 
 const mapStateToProps = ({auth, app}) => ({
     currentUser : auth.currentUser,
+    logo_url : auth.currentUser.logo_url,
     profile: auth.profile
 })
 

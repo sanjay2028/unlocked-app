@@ -1,9 +1,11 @@
 import React, {Fragment} from 'react';
 import InputField from './fields/InputField';
+import InputFile from './fields/InputFile';
 import {requiredEmail, requiredCompany, requiredName, requiredPhone} from './fields/validations';
 import {IconUpload} from '../common/Graphics';
 
-export default ({buttonLabel=null, onSubmit, values=[], invalid=null}) => {        
+export default ({buttonLabel=null,isProcessing, onSubmit, values=[], onLogoUpload, invalid=null, logoUrl}) => { 
+    console.log("Checkout logo", logoUrl);
     const heading = localStorage.getItem('auth_token')? `${values.first_name}'s Profile` : "Create Your Profile";
     return (
         <Fragment>            
@@ -44,22 +46,7 @@ export default ({buttonLabel=null, onSubmit, values=[], invalid=null}) => {
                             </div>
                         </div>
                         <div className="col-sm-6">
-                            <div className="field">
-								<label className="title">Upload Company Logo</label>
-								<div className="field-input is-field-upload">
-									<div className="text-upload">
-										<div className="icon">
-											<img src={IconUpload} alt="Upload Here" />
-										</div>
-										<p>Click and drag a logo to this area or choose from a library</p>
-									</div>
-									<div className="file-upload">
-										<label htmlFor="file-upload-01" className="btn btn-outline-primary">Choose logo</label>
-										<input type="file" className="input-file" id="file-upload-01" />
-									</div>
-								</div>
-
-						    </div>
+                            <InputFile onUpload={onLogoUpload} previewImageUrl={logoUrl} />
                         </div>
                     </div>
 
@@ -67,7 +54,7 @@ export default ({buttonLabel=null, onSubmit, values=[], invalid=null}) => {
                     <div className="row">
                         <div className="button-group">
                             <div className="col-xs-12 col-sm-6 col-md-6">
-                                <button disabled={invalid} className="btn btn-primary btn-medium">{buttonLabel}</button>
+                                <button disabled={invalid || isProcessing } className="btn btn-primary btn-medium">{buttonLabel}</button>
                             </div>
                             {localStorage.getItem('auth_token') &&
                             <div className="col-xs-12 col-sm-6 col-md-6">

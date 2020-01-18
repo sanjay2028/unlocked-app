@@ -43,9 +43,18 @@ const authReducer = (state = initialState, {type, payload=null}) => {
             return {
                 ...state, ...payload, roles : userRoles
             }
+        
+        case 'UPDATE_BROKER_PROFILE':                                                
+            return {
+                ...state, currentUser: payload
+            }
+        
+        case 'UPDATE_INVESTOR_PROFILE':                                                
+            return {
+                ...state, currentUser: {...state.currentUser, payload}
+            }
 
-        case USER_LOGOUT:
-            console.log("LOgged Out called");
+        case USER_LOGOUT:               
             return initialState;
         
         case USER_LOGIN_SUCCESS:            
