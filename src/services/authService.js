@@ -1,22 +1,22 @@
 import axios from 'axios';
 import { BaseUrl } from './settings';
-const config = {
+const config = () => ({
     headers: {        
       Authorization: "Bearer " + localStorage.getItem('auth_token')
     }
-};
+});
 
-const configMultipart = {
+const configMultipart = () => ({
     headers: {
       'Accept': 'application/json',
       Authorization: "Bearer " + localStorage.getItem('auth_token')
     }
-};
+});
 
 const auth = {
     me: () => {
         return  axios
-        .get(`${BaseUrl}frontend/v1/user`,config)
+        .get(`${BaseUrl}frontend/v1/user`,config())
         .then(({data, status}) => {
             if(status == 200){
                 return {currentUser : data}
@@ -41,8 +41,10 @@ const auth = {
                             bodyFormData.append('logo', logo); 
                         }
                         
+                        console.log()
+
                         return axios
-                        .post(`${BaseUrl}frontend/v1/brokers/profile`,bodyFormData, configMultipart)
+                        .post(`${BaseUrl}frontend/v1/brokers/profile`,bodyFormData, configMultipart())
                         .then(({data, status}) => {                            
                             if(status == 200){                                
                                 return {currentUser : data, message:'Settings updated successfully', errors:[]}
@@ -56,7 +58,7 @@ const auth = {
 
         investor :  (payload) =>
                         axios
-                        .post(`${BaseUrl}frontend/v1/investors/profile`, payload, config)
+                        .post(`${BaseUrl}frontend/v1/investors/profile`, payload, config())
                         .then(({data, status}) => {
                             if(status == 200){
                                 return {currentUser : data, message:'Settings updated successfully', errors:[]}
@@ -70,16 +72,16 @@ const auth = {
     },preferences: {
 
         investor :  (payload) => 
-                        axios
-                        .post(`${BaseUrl}frontend/v1/investors/profile-settings`,payload, config)
+            axios
+                        .post(`${BaseUrl}frontend/v1/investors/profile-settings`,payload, config())
                         .then((response) => {                    
                             let {data, status} = response;
                             if(status == 200){
-                                return {currentUser : data, message : "PReferences Updated successfully", error:null}
+                                return {currentUser : data, message : "Preferences Updated successfully", error:null}
                             } 
                             return {currentUser : null, message:null, error:"Failed"}                     
                         })        
-                        .catch(error => ({currentUser : null, message:null, error}))
+                        .catch(error => ({currentUser : null, message:null, error}))                    
             
     },
     register : (params) => {        

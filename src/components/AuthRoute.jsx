@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 class AuthRoute extends Component{ 
   render(){
     let { component: Component, currentUser,isLoading,roles, ...rest } = this.props;
+    console.log("Auth ROute");
     return (
       <Route
         {...rest}

@@ -31,7 +31,7 @@ export default ({buttonLabel, onSubmit, invalid}) => {
                 </div>
             </div>
             <div className="text text-bottom">
-                <p>Don’t have an account? <Link to="/auth/register">Registration</Link></p>
+                <p>Don’t have an account? <Link to="/auth/register" params={{ testvalue: "hello" }}>Registration</Link></p>
             </div>
         </form>
     )
