@@ -4,7 +4,7 @@ import { BrandLogo, Search, LoginButton, MenuToggle, UserNotification, Avator } 
 import ToggleSearch from '../common/ToggleSearch';
 import {LogoUnlocked} from '../common/Graphics';
 
-const UserHeader = () => {	
+const UserHeader = ({currentUser, showUserMenu}) => {	
 	return(
 		<header className="page-header-loggedin clearfix">
 			<div className="container">
@@ -17,7 +17,7 @@ const UserHeader = () => {
 						</div>
 					</div>
 						<UserNotification />
-						<Avator />
+						<Avator showUserMenu={showUserMenu} name={currentUser.full_name} url={currentUser.photo_url}/>
 					</div>
 				</div>
 			</div>
@@ -27,8 +27,8 @@ const UserHeader = () => {
 
 class Header extends Component{    
 	render(){		
-		let {currentUser} = this.props;
-		return (!!Object.keys(currentUser).length) ? <UserHeader /> : 
+		let {currentUser, showUserMenu} = this.props;
+		return (!!Object.keys(currentUser).length) ? <UserHeader currentUser={currentUser} showUserMenu={showUserMenu} /> : 
 			<header className="page-header clearfix">
 				<div className="md-header-desktop clearfix d-none d-lg-block">
 					<div className="container">

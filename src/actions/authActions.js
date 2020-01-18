@@ -8,6 +8,7 @@ import {
     } from './constants';
 
 import auth from '../services/authService';
+import {hideUserMenu} from './appActions';
 
 const registrationStarted = {
     type : REGISTRATION_PROCESS_STARTED
@@ -126,8 +127,15 @@ const loginUser = (dispatch, payload) => {
 }
 
 //Logout
-const logoutUser = {
-    type : USER_LOGOUT
+// const logoutUser = {
+//     type : USER_LOGOUT
+// }
+
+const logoutUser = (dispatch) => {
+    dispatch({type : APP_LOADING_STARTS})
+    dispatch({type : USER_LOGOUT})
+    dispatch(hideUserMenu)
+    dispatch({type : APP_LOADING_ENDS})
 }
 
 export { 

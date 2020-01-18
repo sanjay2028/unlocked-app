@@ -1,7 +1,8 @@
 import React from 'react';
 import Logo from "../../assets/images/logo.png";
-import {LogoUnlocked, DefaultAvator} from '../common/Graphics';
+import {LogoUnlocked, UserIcon} from '../common/Graphics';
 import { Link } from 'react-router-dom';
+import {showUserMenu} from '../../actions/appActions';
 
 const BrandLogo =  ({auth=true}) => <div className="logo"><Link to={auth? '/user/profile' : '/'}><img src={auth? LogoUnlocked : Logo} alt="Home" /></Link></div>
 
@@ -37,10 +38,10 @@ const MenuToggle = () => {
 
 
 
-const Avator = ({avatorUrl=DefaultAvator}) => 
-    <div className="avatar">
-        <Link to="/user/profile">
-            <img src={avatorUrl} alt="" />
+const Avator = ({url=null, name, showUserMenu}) => 
+    <div className="avatar" onClick={() => showUserMenu()}>
+        <Link>
+            <img src={url ? url : UserIcon} alt={name} />
         </Link>
     </div>
 

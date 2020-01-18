@@ -1,4 +1,5 @@
 import React from 'react';
+import UserMenu from '../common/UserMenu';
 
 const Content = ({children}) => {
     return (
@@ -6,6 +7,7 @@ const Content = ({children}) => {
             <div className="container">
                 {children}
             </div>            
+            <UserMenu />
         </main>
     );
 }
